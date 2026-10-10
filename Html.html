@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รายงานผลการดำเนินโครงการ โรงเรียนเกาะแต้วพิทยาสรรค์ ปีงบประมาณ 2568</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#14532D; --p2:#1F7A45; --a:#FBBF24; --bg:#FFFFFF; --soft:#FFF1F7;
+  --ink:#0F2A1B; --mute:#5B6B62; --line:#E3EFE7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--soft);font-family:'IBM Plex Sans Thai',system-ui,sans-serif;color:var(--ink);overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center}
+
+/* ---------- Slide card ---------- */
+.slide{position:absolute;inset:0;background:var(--bg);border-radius:28px;
+  box-shadow:0 12px 34px rgba(20,83,45,.08),0 1px 3px rgba(0,0,0,.05);
+  padding:34px 56px 70px;opacity:0;visibility:hidden;transition:opacity .45s ease;overflow:hidden}
+.slide.active{opacity:1;visibility:visible}
+.slide::before{content:"";position:absolute;right:-120px;top:-120px;width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle,rgba(251,191,36,.16),rgba(251,191,36,0) 70%);pointer-events:none}
+.slide::after{content:"";position:absolute;left:-90px;bottom:-110px;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(20,83,45,.07),rgba(20,83,45,0) 70%);pointer-events:none}
+
+/* ---------- Header ---------- */
+.badge{display:inline-flex;align-items:center;gap:9px;background:#ECF5EF;color:var(--p);font-weight:600;
+  font-size:15px;padding:5px 16px 5px 5px;border-radius:999px;border:1px solid #D6EADC}
+.badge .dot{width:28px;height:28px;border-radius:50%;background:var(--p);display:grid;place-items:center}
+.badge .dot svg{width:15px;height:15px}
+.logo{position:absolute;top:24px;right:40px;width:80px;height:80px;z-index:3;border-radius:50%;
+  box-shadow:0 6px 16px rgba(20,83,45,.18);background:#fff}
+.logo img,.logo svg{width:100%;height:100%;border-radius:50%;display:block;object-fit:contain}
+h1{font-size:42px;font-weight:700;line-height:1.28;margin:14px 0 4px;letter-spacing:-.2px;max-width:1040px}
+.g{background:linear-gradient(90deg,#14532D 0%,#2F8F4E 55%,#E3A008 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:19px;color:var(--mute);margin:0 0 20px}
+
+/* ---------- Footer ---------- */
+.foot{position:absolute;left:56px;right:56px;bottom:22px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--mute)}
+.foot .org{display:flex;align-items:center;gap:10px;font-weight:500}
+.foot .org::before{content:"";width:28px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--p),var(--a))}
+.pg{font-weight:700;color:var(--p);background:#FEF3C7;border-radius:999px;padding:4px 14px;font-size:14px}
+
+/* ---------- Cards ---------- */
+.card{border-radius:20px;padding:18px 22px;position:relative}
+.dark{background:linear-gradient(135deg,#14532D,#1D6B3D);color:#fff}
+.mid{background:#DCEFE3}
+.light{background:#F4F9F6;border:1px solid var(--line)}
+.warm{background:#FFF8E1;border:1px solid #FDE68A}
+.icb{width:52px;height:52px;flex:none;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,#14532D,#22874A);box-shadow:0 6px 14px rgba(20,83,45,.25);
+  transition:transform .25s ease,box-shadow .25s ease;cursor:default}
+.icb.y{background:linear-gradient(135deg,#E8A50C,#FBBF24);box-shadow:0 6px 14px rgba(251,191,36,.35)}
+.icb.sm{width:40px;height:40px}.icb.sm svg{width:20px;height:20px}
+.icb:hover{transform:scale(1.13);box-shadow:0 10px 20px rgba(20,83,45,.3)}
+svg.i{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font-size:15px;opacity:.78}
+.num{font-size:34px;font-weight:700;line-height:1.15}
+.unit{font-size:16px;font-weight:500;opacity:.8;margin-left:4px}
+.flex{display:flex;gap:16px;align-items:center}
+.grid{display:grid;gap:18px}
+
+/* bullets */
+ul.pts{list-style:none;padding:0;margin:0}
+ul.pts li{display:flex;gap:12px;font-size:18px;line-height:1.5;margin:8px 0}
+ul.pts li::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--a);margin-top:10px;flex:none;box-shadow:0 0 0 4px rgba(251,191,36,.2)}
+.dark ul.pts li{color:#fff}
+
+/* bars */
+.bar{height:10px;background:#E2EEE6;border-radius:99px;overflow:hidden}
+.bar span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#14532D,#3BA266 70%,#FBBF24);width:var(--w)}
+.slide.active .bar span{animation:grow 1.1s .45s cubic-bezier(.2,.7,.2,1) both}
+@keyframes grow{from{width:0}}
+
+/* rise animation */
+@keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+.slide.active .r{animation:rise .65s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 110ms + 100ms)}
+
+/* sub-strategy rows */
+.si{display:grid;grid-template-columns:58px 1fr 118px;gap:14px;align-items:center;padding:11px 16px;border-radius:16px;background:#F4F9F6;border:1px solid var(--line);margin-bottom:10px}
+.si .code{font-weight:700;color:#fff;background:var(--p);border-radius:10px;text-align:center;padding:4px 0;font-size:15px}
+.si .nm{font-size:16px;font-weight:600;margin-bottom:6px}
+.si .rt{text-align:right}
+.si .rt b{font-size:19px;color:var(--p)}
+.si .rt small{display:block;font-size:13px;color:var(--mute)}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;margin-left:6px;vertical-align:middle}
+.tag.ok{background:#DCEFE3;color:var(--p)}
+.tag.wait{background:#FEF3C7;color:#92400E}
+
+/* cover */
+.cover h1{font-size:46px;margin-top:22px}
+.who{display:flex;gap:14px;align-items:center;min-width:300px}
+.who b{font-size:19px;display:block;margin:2px 0}
+.stat{display:flex;gap:16px;align-items:center;margin-bottom:16px}
+
+/* donut */
+.donut{width:210px;height:210px;border-radius:50%;flex:none;position:relative;
+  background:conic-gradient(var(--p) 0 55.67%,var(--a) 55.67% 100%)}
+.donut::after{content:"";position:absolute;inset:30px;border-radius:50%;background:#F4F9F6}
+.donut .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center;z-index:1}
+.donut .c b{font-size:36px;color:var(--p)}
+.legend{display:flex;gap:18px;font-size:15px;color:var(--mute);margin-top:8px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:middle}
+
+/* dot grid */
+.dots{display:grid;grid-template-columns:repeat(12,1fr);gap:9px}
+.dots span{aspect-ratio:1;border-radius:8px;background:var(--p)}
+.dots span.no{background:#fff;border:2px dashed var(--a)}
+
+/* strategy compare table */
+.st-row{display:grid;grid-template-columns:44px 250px 1fr 92px 96px;gap:14px;align-items:center;padding:8px 14px;border-radius:14px;margin-bottom:8px;background:#F4F9F6;border:1px solid var(--line)}
+.st-head{display:grid;grid-template-columns:44px 250px 1fr 92px 96px;gap:14px;padding:0 14px 6px;font-size:13px;color:var(--mute);font-weight:600}
+.st-row .nm{font-weight:600;font-size:16px}
+.st-row .nm small{display:block;font-weight:400;font-size:13px;color:var(--mute)}
+.track{position:relative;height:16px;background:#ECF2EE;border-radius:99px}
+.track .in{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:#CFE6D7;width:var(--w)}
+.track .sp{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#14532D,#2F8F4E);width:var(--w)}
+.slide.active .track .in,.slide.active .track .sp{animation:grow 1.1s .4s cubic-bezier(.2,.7,.2,1) both}
+.pc{font-weight:700;color:var(--p);font-size:18px;text-align:right}
+.pj{text-align:center;font-size:15px;font-weight:600;background:#fff;border-radius:99px;padding:3px 0;border:1px solid var(--line)}
+
+/* top spending */
+.top{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px dashed rgba(255,255,255,.25)}
+.top:last-child{border-bottom:none}
+.top b{font-size:22px}
+
+/* nav */
+#nav{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;opacity:.55;transition:opacity .2s}
+#nav:hover{opacity:1}
+#nav button{border:none;background:#fff;color:var(--p);width:36px;height:36px;border-radius:50%;cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);font-size:18px;font-family:inherit}
+#prog{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--p),var(--a));transition:width .4s;z-index:10}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div id="stage">
+
+<!-- ===== 1 : COVER ===== -->
+<section class="slide cover">
+  <div class="logo"></div>
+  <div style="display:grid;grid-template-columns:1fr 330px;gap:40px;height:100%;align-items:center">
+    <div>
+      <div class="badge r"><span class="dot" data-i="flag"></span>รายงานประจำปีงบประมาณ</div>
+      <h1 class="r">รายงานผลการดำเนินโครงการ<br>ของโรงเรียน<span class="g">เกาะแต้วพิทยาสรรค์</span></h1>
+      <p class="sub r" style="font-size:22px">ประจำปีงบประมาณ พ.ศ. 2568</p>
+      <div class="flex r" style="gap:16px;align-items:stretch">
+        <div class="card dark who"><span class="icb y" data-i="user"></span>
+          <div><div class="lbl">นำเสนอโดย</div><b>นางสาวพัชรี สุหลง</b><div class="lbl">หัวหน้ากลุ่มบริหารงานงบประมาณ</div></div></div>
+        <div class="card light who"><span class="icb" data-i="users"></span>
+          <div><div class="lbl">นำเสนอต่อ</div><b>คณะกรรมการสถานศึกษา<br>ขั้นพื้นฐาน</b></div></div>
+      </div>
+    </div>
+    <div style="padding-top:60px">
+      <div class="card mid stat r"><span class="icb" data-i="target"></span><div><div class="num">6</div><div class="lbl">ยุทธศาสตร์</div></div></div>
+      <div class="card light stat r"><span class="icb" data-i="clipboard"></span><div><div class="num">60</div><div class="lbl">โครงการตามแผน</div></div></div>
+      <div class="card dark stat r"><span class="icb y" data-i="wallet"></span><div><div class="num" style="font-size:28px">757,780.60</div><div class="lbl">งบประมาณที่ได้รับ (บาท)</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2 : BUDGET OVERVIEW ===== -->
+<section class="slide">
+  <div class="logo"></div>
+  <div class="badge r"><span class="dot" data-i="pie"></span>ภาพรวมงบประมาณ</div>
+  <h1 class="r">งบปี 2568 <span class="g">ใช้ไปแล้วกว่าครึ่ง</span></h1>
+  <p class="sub r">มาดูกันค่ะว่าเงินที่ได้รับมา ใช้ไปเท่าไร และยังเหลืออีกเท่าไร</p>
+  <div class="grid" style="grid-template-columns:400px 1fr">
+    <div class="grid" style="gap:14px">
+      <div class="card dark flex r"><span class="icb y" data-i="wallet"></span><div><div class="lbl">รายได้ทั้งหมด</div><div class="num">757,780.60<span class="unit">บาท</span></div></div></div>
+      <div class="card mid flex r"><span class="icb" data-i="coins"></span><div><div class="lbl">รายจ่ายแล้ว</div><div class="num">421,834.60<span class="unit">บาท</span></div></div></div>
+      <div class="card light flex r"><span class="icb" data-i="layers"></span><div><div class="lbl">งบประมาณคงเหลือ</div><div class="num">335,946.00<span class="unit">บาท</span></div></div></div>
+    </div>
+    <div class="card light flex r" style="gap:34px;padding:26px 30px">
+      <div class="donut"><div class="c"><b>55.67%</b><span class="lbl">เบิกจ่ายแล้ว</span></div></div>
+      <div>
+        <ul class="pts">
+          <li>เบิกจ่ายไปแล้ว 55.67% ของงบที่ได้รับทั้งปี</li>
+          <li>ยังเหลืองบอีก 335,946 บาท สำหรับโครงการที่ยังไม่ได้ทำ</li>
+          <li>ยุทธศาสตร์ที่ 5 ใช้งบมากที่สุด คือ 180,525.60 บาท</li>
+        </ul>
+        <div class="legend"><span><i style="background:var(--p)"></i>เบิกจ่ายแล้ว</span><span><i style="background:var(--a)"></i>คงเหลือ</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3 : PROJECT OVERVIEW ===== -->
+<section class="slide">
+  <div class="logo"></div>
+  <div class="badge r"><span class="dot" data-i="clipboard"></span>ภาพรวมโครงการ</div>
+  <h1 class="r">60 โครงการ <span class="g">ทำแล้ว 32 โครงการ</span></h1>
+  <p class="sub r">ดำเนินการแล้วเกินครึ่งหนึ่งของแผน และยังมีงานรออยู่อีกพอสมควร</p>
+  <div class="grid" style="grid-template-columns:330px 1fr">
+    <div class="grid" style="gap:14px">
+      <div class="card dark flex r"><span class="icb y" data-i="check"></span><div><div class="lbl">ดำเนินการแล้ว</div><div class="num">32<span class="unit">โครงการ (53.33%)</span></div></div></div>
+      <div class="card warm flex r"><span class="icb y" data-i="clock"></span><div><div class="lbl">ยังไม่ได้ดำเนินการ</div><div class="num">28<span class="unit">โครงการ</span></div></div></div>
+      <div class="card mid flex r"><span class="icb" data-i="clipboard"></span><div><div class="lbl">โครงการทั้งหมด</div><div class="num">60<span class="unit">โครงการ</span></div></div></div>
+    </div>
+    <div class="card light r" style="padding:24px 28px">
+      <div class="dots" id="dots"></div>
+      <div class="legend" style="margin:14px 0 6px"><span><i style="background:var(--p)"></i>ดำเนินการแล้ว (32)</span><span><i style="background:#fff;border:2px dashed var(--a)"></i>ยังไม่ดำเนินการ (28)</span></div>
+      <ul class="pts">
+        <li>1 ช่อง = 1 โครงการ ตอนนี้ทำไปแล้ว 53.33%</li>
+        <li>โครงการที่ยังไม่ได้ทำส่วนใหญ่อยู่ในยุทธศาสตร์ที่ 3 (9 โครงการ) และยุทธศาสตร์ที่ 1 (7 โครงการ)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4 : STRATEGY COMPARISON ===== -->
+<section class="slide">
+  <div class="logo"></div>
+  <div class="badge r"><span class="dot" data-i="bar"></span>เปรียบเทียบรายยุทธศาสตร์</div>
+  <h1 class="r">ภาพรวม <span class="g">6 ยุทธศาสตร์</span> ในหน้าเดียว</h1>
+  <p class="sub r" style="margin-bottom:12px">แถบอ่อน = รายได้ · แถบเข้ม = รายจ่าย (เทียบกับยุทธศาสตร์ที่ได้งบมากที่สุด)</p>
+  <div class="st-head r"><span></span><span>ยุทธศาสตร์</span><span>รายได้ / รายจ่าย</span><span style="text-align:right">% จ่าย</span><span style="text-align:center">โครงการ</span></div>
+  <div class="st-row r"><span class="icb sm" data-i="heart"></span><div class="nm">1. คุณธรรม จริยธรรม<small>143,744 / 72,483 บาท</small></div><div class="track"><div class="in" style="--w:66.3%"></div><div class="sp" style="--w:33.4%"></div></div><div class="pc">50.43%</div><div class="pj">9/16</div></div>
+  <div class="st-row r"><span class="icb sm" data-i="grad"></span><div class="nm">2. วิชาการและทักษะ<small>181,000 / 121,381 บาท</small></div><div class="track"><div class="in" style="--w:83.5%"></div><div class="sp" style="--w:56%"></div></div><div class="pc">67.06%</div><div class="pj">14/17</div></div>
+  <div class="st-row r"><span class="icb sm" data-i="book"></span><div class="nm">3. หลักสูตรและการเรียนรู้<small>171,316 / 44,045 บาท</small></div><div class="track"><div class="in" style="--w:79%"></div><div class="sp" style="--w:20.3%"></div></div><div class="pc">25.71%</div><div class="pj">4/13</div></div>
+  <div class="st-row r"><span class="icb sm" data-i="user"></span><div class="nm">4. พัฒนาครูและบุคลากร<small>34,000 / 0 บาท</small></div><div class="track"><div class="in" style="--w:15.7%"></div><div class="sp" style="--w:0%"></div></div><div class="pc">0%</div><div class="pj">0/4</div></div>
+  <div class="st-row r"><span class="icb sm y" data-i="building"></span><div class="nm">5. ระบบบริหารจัดการ<small>216,720.60 / 180,525.60 บาท</small></div><div class="track"><div class="in" style="--w:100%"></div><div class="sp" style="--w:83.3%"></div></div><div class="pc">83.30%</div><div class="pj">4/8</div></div>
+  <div class="st-row r"><span class="icb sm" data-i="users"></span><div class="nm">6. การมีส่วนร่วมของชุมชน<small>11,000 / 3,400 บาท</small></div><div class="track"><div class="in" style="--w:5.1%"></div><div class="sp" style="--w:1.6%"></div></div><div class="pc">30.91%</div><div class="pj">1/2</div></div>
+</section>
+
+<!-- ===== 5 : STRATEGY 1 ===== -->
+<section class="slide">
+  <div class="logo"></div>
+  <div class="badge r"><span class="dot" data-i="heart"></span>ยุทธศาสตร์ที่ 1</div>
+  <h1 class="r">ส่งเสริม<span class="g">คุณธรรม จริยธรรม</span>ของนักเรียน</h1>
+  <p class="sub r">รายได้ 143,744 บาท · จ่ายไป 72,483 บาท (50.43%) · ทำแล้ว 9 จาก 16 โครงการ</p>
+  <div class="grid" style="grid-template-columns:1fr 360px">
+    <div>
+      <div class="si r"><span class="code">1.1</span><div><div class="nm">คุณธรรม จริยธรรม และเศรษฐกิจพอเพียง</div><div class="bar"><span style="--w:13.56%"></span></div></div><div class="rt"><b>13.56%</b><small>ทำแล้ว 1/4 โครงการ</small></div></div>
+      <div class="si r"><span class="code">1.2</span><div><div class="nm">ระบบดูแลช่วยเหลือนักเรียน <span class="tag ok">ครบทุกโครงการ</span></div><div class="bar"><span style="--w:75.56%"></span></div></div><div class="rt"><b>75.56%</b><small>ทำแล้ว 3/3 โครงการ</small></div></div>
+      <div class="si r"><span class="code">1.3</span><div><div class="nm">ประชาธิปไตย จิตสาธารณะ และสิ่งแวดล้อม</div><div class="bar"><span style="--w:15.08%"></span></div></div><div class="rt"><b>15.08%</b><small>ทำแล้ว 2/6 โครงการ</small></div></div>
+      <div class="si r"><span class="code">1.4</span><div><div class="nm">สุขภาพอนามัยนักเรียน <span class="tag ok">ครบทุกโครงการ</span></div><div class="bar"><span style="--w:90.91%"></span></div></div><div class="rt"><b>90.91%</b><small>ทำแล้ว 3/3 โครงการ</small></div></div>
+    </div>
+    <div class="card dark r">
+      <div class="flex" style="margin-bottom:10px"><span class="icb y" data-i="bulb"></span><b style="font-size:20px">ประเด็นสำคัญ</b></div>
+      <ul class="pts">
+        <li>งานดูแลช่วยเหลือนักเรียนและงานสุขภาพทำครบทุกโครงการ</li>
+        <li>กลยุทธ์ 1.1 และ 1.3 ยังเบิกจ่ายไม่ถึง 16%</li>
+        <li>ยังเหลืองบ 71,261 บาท สำหรับอีก 7 โครงการ</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6 : STRATEGY 2 ===== -->
+<section class="slide">
+  <div class="logo"></div>
+  <div class="badge r"><span class="dot" data-i="grad"></span>ยุทธศาสตร์ที่ 2</div>
+  <h1 class="r">พัฒนานักเรียนด้าน<span class="g">วิชาการ</span> ทำได้มากที่สุด</h1>
+  <p class="sub r">รายได้ 181,000 บาท · จ่ายไป 121,381 บาท (67.06%) · ทำแล้ว 14 จาก 17 โครงการ</p>
+  <div class="grid" style="grid-template-columns:300px 1fr">
+    <div class="grid" style="gap:14px">
+      <div class="card dark r" style="text-align:center;padding:24px">
+        <span class="icb y" data-i="star" style="margin:0 auto 8px"></span>
+        <div class="num" style="font-size:52px">82.35%</div>
+        <div class="lbl">โครงการที่ดำเนินการแล้ว<br>สูงที่สุดใน 6 ยุทธศาสตร์</div>
+      </div>
+      <div class="card warm r">
+        <ul class="pts">
+          <li>กลยุทธ์ 2.1 ทำครบทั้ง 7 โครงการ</li>
+          <li>เหลืออีก 3 โครงการ งบคงเหลือ 59,619 บาท</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="si r"><span class="code">2.1</span><div><div class="nm">ผลสัมฤทธิ์ทุกกลุ่มสาระและทักษะที่จำเป็น <span class="tag ok">7/7</span></div><div class="bar"><span style="--w:82.72%"></span></div></div><div class="rt"><b>82.72%</b><small>81,890 / 99,000</small></div></div>
+      <div class="si r"><span class="code">2.2</span><div><div class="nm">ภาษา การคิดคำนวณ และคิดวิเคราะห์ <span class="tag wait">4/6</span></div><div class="bar"><span style="--w:43.88%"></span></div></div><div class="rt"><b>43.88%</b><small>17,991 / 41,000</small></div></div>
+      <div class="si r"><span class="code">2.3</span><div><div class="nm">ดนตรีและเทคโนโลยีการเกษตร <span class="tag wait">3/4</span></div><div class="bar"><span style="--w:52.44%"></span></div></div><div class="rt"><b>52.44%</b><small>21,500 / 41,000</small></div></div>
+      <div class="card light flex r" style="padding:14px 18px"><span class="icb sm" data-i="trend"></span><span style="font-size:16px">โครงการที่ได้งบมากที่สุดคือ <b>ส่งเสริมการแข่งขันทางวิชาการ 8 กลุ่มสาระ</b> ได้รับ 44,000 บาท</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7 : STRATEGY 3 ===== -->
+<section class="slide">
+  <div class="logo"></div>
+  <div class="badge r"><span class="dot" data-i="book"></span>ยุทธศาสตร์ที่ 3</div>
+  <h1 class="r">หลักสูตรและการเรียนรู้ <span class="g">ยังต้องเร่งเครื่อง</span></h1>
+  <p class="sub r">รายได้ 171,316 บาท · จ่ายไป 44,045 บาท (25.71%) · ทำแล้ว 4 จาก 13 โครงการ</p>
+  <div class="grid" style="grid-template-columns:1fr 330px">
+    <div>
+      <div class="si r"><span class="code">3.1</span><div><div class="nm">พัฒนาหลักสูตรสถานศึกษา</div><div class="bar"><span style="--w:43.33%"></span></div></div><div class="rt"><b>43.33%</b><small>ทำแล้ว 1/2 โครงการ</small></div></div>
+      <div class="si r"><span class="code">3.2</span><div><div class="nm">Active Learning และการทำงานเป็นทีม</div><div class="bar"><span style="--w:44.35%"></span></div></div><div class="rt"><b>44.35%</b><small>ทำแล้ว 2/5 โครงการ</small></div></div>
+      <div class="si r"><span class="code">3.3</span><div><div class="nm">เทคโนโลยีและแหล่งเรียนรู้ <span class="tag wait">ต้องเร่ง</span></div><div class="bar"><span style="--w:8.56%"></span></div></div><div class="rt"><b>8.56%</b><small>ทำแล้ว 1/5 โครงการ</small></div></div>
+      <div class="si r"><span class="code">3.4</span><div><div class="nm">สื่อนวัตกรรมการเรียนการสอน <span class="tag wait">ยังไม่เริ่ม</span></div><div class="bar"><span style="--w:0%"></span></div></div><div class="rt"><b>0%</b><small>ทำแล้ว 0/1 โครงการ</small></div></div>
+    </div>
+    <div class="grid" style="gap:14px">
+      <div class="card dark r" style="text-align:center">
+        <span class="icb y" data-i="alert" style="margin:0 auto 6px"></span>
+        <div class="lbl">งบคงเหลือมากที่สุด</div>
+        <div class="num">127,271<span class="unit">บาท</span></div>
+      </div>
+      <div class="card warm r">
+        <ul class="pts">
+          <li>มีโครงการรอดำเนินการ 9 โครงการ มากที่สุดในทุกยุทธศาสตร์</li>
+          <li>ควรวางแผนจัดกิจกรรมให้ทันภายในปีงบประมาณ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8 : STRATEGY 5 ===== -->
+<section class="slide">
+  <div class="logo"></div>
+  <div class="badge r"><span class="dot" data-i="building"></span>ยุทธศาสตร์ที่ 5</div>
+  <h1 class="r">ระบบบริหารจัดการ <span class="g">เบิกจ่ายสูงสุด 83.30%</span></h1>
+  <p class="sub r">รายได้ 216,720.60 บาท · จ่ายไป 180,525.60 บาท · ทำแล้ว 4 จาก 8 โครงการ</p>
+  <div class="grid" style="grid-template-columns:1fr 400px">
+    <div>
+      <div class="si r"><span class="code">5.1</span><div><div class="nm">บริหารจัดการศึกษาอย่างมีคุณภาพ <span class="tag ok">4/5</span></div><div class="bar"><span style="--w:86.08%"></span></div></div><div class="rt"><b>86.08%</b><small>180,525.60 / 209,720.60</small></div></div>
+      <div class="si r"><span class="code">5.2</span><div><div class="nm">สภาพแวดล้อมและภูมิทัศน์ <span class="tag wait">0/2</span></div><div class="bar"><span style="--w:0%"></span></div></div><div class="rt"><b>0%</b><small>งบ 3,000 บาท</small></div></div>
+      <div class="si r"><span class="code">5.3</span><div><div class="nm">อาคารเรียนและห้องปฏิบัติการ <span class="tag wait">0/1</span></div><div class="bar"><span style="--w:0%"></span></div></div><div class="rt"><b>0%</b><small>งบ 4,000 บาท</small></div></div>
+      <div class="card warm r" style="margin-top:6px">
+        <ul class="pts">
+          <li>งบเกือบทั้งหมดใช้ไปกับปัจจัยพื้นฐานของนักเรียน</li>
+          <li>กลยุทธ์ 5.2 และ 5.3 ยังไม่ได้ดำเนินการ</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card dark r">
+      <div class="flex" style="margin-bottom:6px"><span class="icb y" data-i="coins"></span><b style="font-size:20px">3 รายการที่ใช้งบมากที่สุด</b></div>
+      <div class="top"><span class="icb sm" style="background:rgba(255,255,255,.14)" data-i="book"></span><div style="flex:1">ค่าหนังสือเรียน</div><b>82,360</b></div>
+      <div class="top"><span class="icb sm" style="background:rgba(255,255,255,.14)" data-i="shirt"></span><div style="flex:1">ค่าเครื่องแบบนักเรียน</div><b>49,350</b></div>
+      <div class="top"><span class="icb sm" style="background:rgba(255,255,255,.14)" data-i="pencil"></span><div style="flex:1">ค่าอุปกรณ์การเรียน</div><b>44,720</b></div>
+      <div class="lbl" style="margin-top:8px">หน่วย: บาท (ยอดเบิกจ่ายสุทธิ) · รวมกันประมาณ 98% ของรายจ่ายยุทธศาสตร์นี้</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 9 : STRATEGY 4 & 6 ===== -->
+<section class="slide">
+  <div class="logo"></div>
+  <div class="badge r"><span class="dot" data-i="users"></span>ยุทธศาสตร์ที่ 4 และ 6</div>
+  <h1 class="r">พัฒนาครูและ<span class="g">ความร่วมมือกับชุมชน</span></h1>
+  <p class="sub r">สองยุทธศาสตร์นี้ได้งบไม่มาก แต่สำคัญกับคุณภาพการศึกษาในระยะยาว</p>
+  <div class="grid" style="grid-template-columns:1fr 1fr">
+    <div class="card light r">
+      <div class="flex" style="margin-bottom:12px"><span class="icb" data-i="user"></span><div><b style="font-size:20px">ยุทธศาสตร์ที่ 4 · พัฒนาครูและบุคลากร</b><div class="lbl">รายได้ 34,000 บาท · ยังไม่มีรายจ่าย</div></div></div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card mid" style="padding:14px 16px"><div class="lbl">โครงการที่ทำแล้ว</div><div class="num">0/4</div></div>
+        <div class="card warm" style="padding:14px 16px"><div class="lbl">งบคงเหลือ</div><div class="num" style="font-size:28px">34,000</div></div>
+      </div>
+      <ul class="pts"><li>ยังไม่ได้เริ่มทั้ง 4 โครงการ เช่น อบรม/ศึกษาดูงาน และนิเทศภายใน</li></ul>
+    </div>
+    <div class="card light r">
+      <div class="flex" style="margin-bottom:12px"><span class="icb y" data-i="users"></span><div><b style="font-size:20px">ยุทธศาสตร์ที่ 6 · การมีส่วนร่วมของชุมชน</b><div class="lbl">รายได้ 11,000 บาท · จ่ายไป 3,400 บาท</div></div></div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card dark" style="padding:14px 16px"><div class="lbl">โครงการที่ทำแล้ว</div><div class="num">1/2</div></div>
+        <div class="card mid" style="padding:14px 16px"><div class="lbl">เบิกจ่ายแล้ว</div><div class="num" style="font-size:28px">30.91%</div></div>
+      </div>
+      <ul class="pts"><li>จัดโครงการพบปะผู้ปกครองแล้ว ส่วนโครงการประชุมคณะกรรมการสถานศึกษายังไม่ได้เบิกจ่าย</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 : SUMMARY ===== -->
+<section class="slide">
+  <div class="logo"></div>
+  <div class="badge r"><span class="dot" data-i="target"></span>สรุปและก้าวต่อไป</div>
+  <h1 class="r">สรุปภาพรวม และ<span class="g">สิ่งที่จะทำต่อ</span></h1>
+  <p class="sub r">ขอบคุณคณะกรรมการทุกท่านที่ร่วมติดตามการทำงานของโรงเรียนค่ะ</p>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card dark r" style="min-height:220px">
+      <span class="icb y" data-i="star"></span>
+      <h3 style="font-size:22px;margin:14px 0 8px">จุดเด่น</h3>
+      <ul class="pts"><li>ยุทธศาสตร์ที่ 5 เบิกจ่ายได้ 83.30% และยุทธศาสตร์ที่ 2 ทำโครงการได้ 82.35%</li></ul>
+    </div>
+    <div class="card warm r" style="min-height:220px">
+      <span class="icb y" data-i="alert"></span>
+      <h3 style="font-size:22px;margin:14px 0 8px">ต้องเร่ง</h3>
+      <ul class="pts"><li>มี 28 โครงการที่ยังไม่ได้ทำ ส่วนใหญ่อยู่ในยุทธศาสตร์ที่ 3 และ 4</li></ul>
+    </div>
+    <div class="card mid r" style="min-height:220px">
+      <span class="icb" data-i="trend"></span>
+      <h3 style="font-size:22px;margin:14px 0 8px">ก้าวต่อไป</h3>
+      <ul class="pts"><li>ติดตามผลทุกไตรมาส และวางแผนใช้งบคงเหลือ 335,946 บาท ให้คุ้มค่า</li></ul>
+    </div>
+  </div>
+  <div class="card light flex r" style="margin-top:18px;justify-content:center;padding:14px">
+    <span class="icb sm" data-i="heart"></span><b style="font-size:22px" class="g">ขอบคุณค่ะ</b><span class="lbl">· ยินดีรับฟังข้อเสนอแนะจากคณะกรรมการทุกท่าน</span>
+  </div>
+</section>
+
+</div>
+
+<div id="nav">
+  <button id="prev" aria-label="ก่อนหน้า">‹</button>
+  <button id="fs" aria-label="เต็มจอ">⛶</button>
+  <button id="next" aria-label="ถัดไป">›</button>
+</div>
+
+<script>
+/* ===== ตั้งค่าโลโก้: ใส่ชื่อไฟล์รูป หรือ data:image/png;base64,... ===== */
+const LOGO_SRC = "logo.png";
+const FOOT_TEXT = "งานแผนและนโยบาย โรงเรียนเกาะแต้วพิทยาสรรค์";
+
+const LOGO_FALLBACK = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="49" fill="#14532D"/><circle cx="50" cy="50" r="44" fill="none" stroke="#FBBF24" stroke-width="2.5"/><circle cx="50" cy="50" r="29" fill="none" stroke="#FBBF24" stroke-width="2"/><path d="M45 23 L50 40 L55 23" fill="none" stroke="#FBBF24" stroke-width="2"/><path d="M38 41 L62 41 L57 58 L50 66 L43 58 Z" fill="none" stroke="#FBBF24" stroke-width="2"/><circle cx="50" cy="45" r="5" fill="#FBBF24"/><circle cx="45" cy="53" r="5" fill="#FBBF24"/><circle cx="55" cy="53" r="5" fill="#FBBF24"/><circle cx="12" cy="50" r="2.5" fill="#FBBF24"/><circle cx="88" cy="50" r="2.5" fill="#FBBF24"/></svg>`;
+
+const ICONS = {
+  wallet:'<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+  pie:'<path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>',
+  target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  check:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/>',
+  alert:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  trend:'<path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/>',
+  coins:'<circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/>',
+  clipboard:'<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+  heart:'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+  book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  grad:'<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  building:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/>',
+  layers:'<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>',
+  bulb:'<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+  user:'<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+  bar:'<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+  flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  shirt:'<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>',
+  pencil:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>'
+};
+document.querySelectorAll('[data-i]').forEach(el=>{
+  el.innerHTML = `<svg class="i" viewBox="0 0 24 24">${ICONS[el.dataset.i]||''}</svg>`;
+});
+
+/* logo */
+document.querySelectorAll('.logo').forEach(el=>{
+  if(!LOGO_SRC){ el.innerHTML = LOGO_FALLBACK; return; }
+  const img = new Image(); img.alt = 'โลโก้โรงเรียนเกาะแต้วพิทยาสรรค์';
+  img.onerror = ()=>{ el.innerHTML = LOGO_FALLBACK; };
+  img.src = LOGO_SRC; el.appendChild(img);
+});
+
+/* dots: 32 done / 28 not yet */
+const dots = document.getElementById('dots');
+for(let k=0;k<60;k++){ const s=document.createElement('span'); if(k>=32) s.className='no'; dots.appendChild(s); }
+
+/* footer + page numbers + stagger index */
+const slides = [...document.querySelectorAll('.slide')];
+slides.forEach((s,idx)=>{
+  const f = document.createElement('div'); f.className='foot';
+  f.innerHTML = `<span class="org">${FOOT_TEXT}</span><span class="pg">${String(idx+1).padStart(2,'0')} / ${slides.length}</span>`;
+  s.appendChild(f);
+  s.querySelectorAll('.r').forEach((el,i)=>el.style.setProperty('--i',i));
+});
+
+/* navigation */
+let cur = 0;
+function show(n){
+  cur = Math.max(0, Math.min(slides.length-1, n));
+  slides.forEach((s,i)=>s.classList.toggle('active', i===cur));
+  document.getElementById('prog').style.width = ((cur+1)/slides.length*100)+'%';
+  history.replaceState(null,'','#'+(cur+1));
+}
+document.getElementById('next').onclick = ()=>show(cur+1);
+document.getElementById('prev').onclick = ()=>show(cur-1);
+document.getElementById('fs').onclick = ()=>{ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); };
+document.addEventListener('keydown', e=>{
+  if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){ e.preventDefault(); show(cur+1); }
+  if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){ e.preventDefault(); show(cur-1); }
+  if(e.key==='Home') show(0);
+  if(e.key==='End') show(slides.length-1);
+  if(e.key==='f'||e.key==='F') document.getElementById('fs').click();
+});
+let tx = null;
+document.addEventListener('touchstart', e=>{ tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e=>{
+  if(tx===null) return; const dx = e.changedTouches[0].clientX - tx;
+  if(Math.abs(dx)>50) show(cur + (dx<0?1:-1)); tx = null;
+});
+
+/* scale 16:9 stage to screen */
+const stage = document.getElementById('stage');
+function fit(){
+  const s = Math.min(innerWidth/1340, innerHeight/770);
+  stage.style.transform = `translate(-50%,-50%) scale(${s})`;
+}
+addEventListener('resize', fit); fit();
+
+show((parseInt(location.hash.slice(1))||1)-1);
+</script>
+</body>
+</html>
