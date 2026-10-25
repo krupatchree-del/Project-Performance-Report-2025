@@ -1,0 +1,26 @@
+{
+  "name": "chem-calc-game",
+  "version": "1.0.0",
+  "description": "เกมตะลุยด่านห้องแล็บเคมี: การคำนวณทางเคมี ม.4 (Vite + Node.js + SQLite + Electron)",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev:server": "node --no-warnings server/index.cjs",
+    "dev:client": "node ./node_modules/vite/bin/vite.js",
+    "build": "node ./node_modules/vite/bin/vite.js build",
+    "start": "node ./node_modules/vite/bin/vite.js build && ./node_modules/electron/dist/electron.exe ."
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "electron": "^33.2.1",
+    "vite": "^6.0.5",
+    "wait-on": "^8.0.1"
+  }
+}
