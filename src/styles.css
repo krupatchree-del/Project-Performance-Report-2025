@@ -1630,11 +1630,141 @@ code, pre, .calc-res, .cf-main {
   background: rgba(56, 189, 248, 0.2);
 }
 
+/* Cloud / Supabase Setup Modal & Hybrid Badges */
+.clickable-pill {
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.clickable-pill:hover {
+  transform: translateY(-1px);
+  background: rgba(16, 185, 129, 0.24);
+}
+
+.db-mode-btn.mode-supabase {
+  border-color: rgba(16, 185, 129, 0.55);
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+}
+
+.db-mode-btn.mode-sqlite {
+  border-color: rgba(56, 189, 248, 0.55);
+  background: rgba(56, 189, 248, 0.15);
+  color: #7dd3fc;
+}
+
+.db-mode-btn.mode-local {
+  border-color: rgba(245, 158, 11, 0.55);
+  background: rgba(245, 158, 11, 0.15);
+  color: #fde047;
+}
+
+.cloud-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cloud-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 1.25rem;
+}
+
+.current-engine-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.current-engine-banner span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.cloud-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.cloud-alert-ok {
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #6ee7b7;
+}
+
+.cloud-alert-err {
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #fca5a5;
+}
+
+.cloud-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.sql-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+}
+
+.sql-preview-box {
+  background: #090d16;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.76rem;
+  color: #93c5fd;
+  max-height: 330px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
 @media (max-width: 960px) {
-  .hero-banner, .periodic-layout, .calculator-layout, .dashboard-two-col, .qmanager-grid, .profile-modal-grid {
+  .hero-banner,
+  .periodic-layout,
+  .calculator-layout,
+  .dashboard-two-col,
+  .qmanager-grid,
+  .profile-modal-grid,
+  .cloud-modal-grid {
     grid-template-columns: 1fr;
   }
-  .choices-grid {
+  .choices-grid,
+  .kpi-grid,
+  .summary-metrics {
     grid-template-columns: 1fr;
+  }
+  .battle-hud {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hud-player,
+  .hud-boss {
+    justify-content: center;
+  }
+  .top-navbar {
+    padding: 0.75rem 1rem;
+  }
+  .main-content {
+    padding: 1rem;
   }
 }

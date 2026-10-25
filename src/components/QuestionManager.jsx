@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { PlusCircle, Trash2, BookOpen, Filter } from 'lucide-react';
+import {
+  fetchQuestions,
+  createQuestion,
+  deleteQuestionById
+} from '../services/dataService';
 
-export default function QuestionManager({ stages }) {
+export default function QuestionManager({
+  stages,
+  backendLabel = 'Supabase / SQLite',
+  onQuestionsChanged
+}) {
   const [questions, setQuestions] = useState([]);
   const [filterStage, setFilterStage] = useState('all');
   const [form, setForm] = useState({
@@ -25,10 +34,7 @@ export default function QuestionManager({ stages }) {
   const [message, setMessage] = useState('');
 
   const loadQuestions = async () => {
-    const url =
-      filterStage === 'all' ? '/api/questions' : `/api/questions?stage_id=${filterStage}`;
-    const res = await fetch(url);
-    const data = await res.json();
+    const data = await fetchQuestions(filterStage);
     setQuestions(data || []);
   };
 
@@ -43,17 +49,12 @@ export default function QuestionManager({ stages }) {
         ? [form.choiceA, form.choiceB, form.choiceC, form.choiceD].filter((c) => c.trim() !== '')
         : [];
 
-    const res = await fetch('/api/questions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    try {
+      await createQuestion({
         ...form,
         choices
-      })
-    });
-
-    if (res.ok) {
-      setMessage('✅ เพิ่มโจทย์ใหม่ลงฐานข้อมูล SQLite สำเร็จ!');
+      });
+      setMessage(`✅ เพิ่มโจทย์ใหม่ลงฐานข้อมูล (${backendLabel}) สำเร็จ!`);
       setForm({
         ...form,
         question_text: '',
@@ -68,14 +69,18 @@ export default function QuestionManager({ stages }) {
         hint: '',
         explanation: ''
       });
-      loadQuestions();
+      await loadQuestions();
+      if (onQuestionsChanged) await onQuestionsChanged();
       setTimeout(() => setMessage(''), 4000);
+    } catch (err) {
+      setMessage(`❌ เกิดข้อผิดพลาด: ${err.message}`);
     }
   };
 
   const handleDelete = async (id) => {
-    await fetch(`/api/questions/${id}`, { method: 'DELETE' });
-    loadQuestions();
+    await deleteQuestionById(id);
+    await loadQuestions();
+    if (onQuestionsChanged) await onQuestionsChanged();
   };
 
   return (
@@ -84,7 +89,7 @@ export default function QuestionManager({ stages }) {
         {/* Left: Add Question Form */}
         <div className="dash-card">
           <h3>
-            <PlusCircle size={20} /> เพิ่มโจทย์การคำนวณทางเคมีใหม่ลง SQLite
+            <PlusCircle size={20} /> เพิ่มโจทย์การคำนวณทางเคมีใหม่ ({backendLabel})
           </h3>
 
           {message && <div className="alert-success">{message}</div>}
@@ -258,7 +263,7 @@ export default function QuestionManager({ stages }) {
             </div>
 
             <button type="submit" className="primary-btn">
-              <PlusCircle size={18} /> บันทึกโจทย์ลงฐานข้อมูล SQLite
+              <PlusCircle size={18} /> บันทึกโจทย์ลงฐานข้อมูล ({backendLabel})
             </button>
           </form>
         </div>

@@ -15,10 +15,12 @@ import {
   RotateCcw,
   ArrowRight
 } from 'lucide-react';
+import { fetchQuestions, recordStageCompletion } from '../services/dataService';
 
 export default function GameplayArena({
   stage,
   student,
+  backendLabel = 'Supabase / SQLite',
   onBackToMap,
   onStageCompleted,
   onOpenLabTool
@@ -29,7 +31,7 @@ export default function GameplayArena({
   const [selectedChoice, setSelectedChoice] = useState('');
   const [numericInput, setNumericInput] = useState('');
   const [showHint, setShowHint] = useState(false);
-  const [feedback, setFeedback] = useState(null); // { isCorrect, earnedPoints, correctAnswer, explanation }
+  const [feedback, setFeedback] = useState(null);
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(0);
   const [hearts, setHearts] = useState(3);
@@ -43,8 +45,7 @@ export default function GameplayArena({
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    fetch(`/api/questions?stage_id=${stage.id}`)
-      .then((res) => res.json())
+    fetchQuestions(stage.id)
       .then((data) => {
         if (!mounted) return;
         setQuestions(data || []);
@@ -69,7 +70,10 @@ export default function GameplayArena({
       currentQ.question_type === 'numeric' ? numericInput.trim() : selectedChoice.trim();
     if (!rawAnswer) return;
 
-    const timeSpentSec = Math.max(1, Number(((Date.now() - questionStartRef.current) / 1000).toFixed(1)));
+    const timeSpentSec = Math.max(
+      1,
+      Number(((Date.now() - questionStartRef.current) / 1000).toFixed(1))
+    );
 
     let isCorrect = false;
     if (currentQ.question_type === 'numeric') {
@@ -105,6 +109,7 @@ export default function GameplayArena({
     const newLog = {
       question_id: currentQ.id,
       topic: currentQ.topic,
+      chemical_formula: currentQ.chemical_formula || '',
       student_answer: rawAnswer,
       is_correct: isCorrect,
       points_earned: earnedPoints,
@@ -125,7 +130,6 @@ export default function GameplayArena({
   const handleNextQuestion = async () => {
     const nextIdx = currentIndex + 1;
     if (nextIdx >= questions.length) {
-      // Stage finished! Save to SQLite
       setStageFinished(true);
       setSavingResult(true);
 
@@ -135,19 +139,15 @@ export default function GameplayArena({
       const stars = accuracyPct >= 80 ? 3 : accuracyPct >= 60 ? 2 : accuracyPct >= 40 ? 1 : 0;
 
       try {
-        await fetch('/api/stage-complete', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            student_id: student.id,
-            stage_id: stage.id,
-            score,
-            stars,
-            accuracy_pct: accuracyPct,
-            logs: attemptLogs
-          })
+        await recordStageCompletion({
+          student_id: student.id,
+          stage_id: stage.id,
+          score,
+          stars,
+          accuracy_pct: accuracyPct,
+          logs: attemptLogs
         });
-        if (onStageCompleted) onStageCompleted();
+        if (onStageCompleted) await onStageCompleted();
       } catch (err) {
         console.error('Error saving stage result:', err);
       } finally {
@@ -241,8 +241,8 @@ export default function GameplayArena({
 
         <p className="db-saved-status">
           {savingResult
-            ? '⏳ กำลังบันทึกผลการทดลองลงฐานข้อมูล SQLite...'
-            : '✅ บันทึกคะแนนและประวัติการทำโจทย์ลงฐานข้อมูล SQLite เรียบร้อยแล้ว'}
+            ? `⏳ กำลังบันทึกผลการทดลองลงฐานข้อมูล (${backendLabel})...`
+            : `✅ บันทึกคะแนนและประวัติการทำโจทย์ลงฐานข้อมูล (${backendLabel}) เรียบร้อยแล้ว`}
         </p>
 
         <div className="summary-actions">

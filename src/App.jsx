@@ -13,12 +13,20 @@ import {
   Trophy,
   Sparkles,
   CheckCircle2,
-  Database
+  Database,
+  Cloud
 } from 'lucide-react';
 import GameplayArena from './components/GameplayArena';
 import LabToolsModal from './components/LabToolsModal';
 import TeacherDashboard from './components/TeacherDashboard';
 import QuestionManager from './components/QuestionManager';
+import CloudSetupModal from './components/CloudSetupModal';
+import {
+  fetchStages,
+  fetchStudents,
+  createStudent,
+  getActiveBackendInfo
+} from './services/dataService';
 
 const AVATARS = ['🧑‍🔬', '👩‍🔬', '🧙‍♂️', '🦸‍♀️', '🤖', '🦊', '🐱‍🚀'];
 
@@ -28,10 +36,14 @@ export default function App() {
   const [students, setStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState(null);
   const [selectedStage, setSelectedStage] = useState(null);
+  const [backendInfo, setBackendInfo] = useState(getActiveBackendInfo());
 
   // Lab Tools Modal
   const [labModalOpen, setLabModalOpen] = useState(false);
   const [labModalTab, setLabModalTab] = useState('periodic');
+
+  // Cloud / Supabase Setup Modal
+  const [cloudModalOpen, setCloudModalOpen] = useState(false);
 
   // Student Profile Modal
   const [profileModalOpen, setProfileModalOpen] = useState(false);
@@ -45,19 +57,18 @@ export default function App() {
 
   const loadInitialData = async () => {
     try {
-      const [stagesRes, studentsRes] = await Promise.all([
-        fetch('/api/stages'),
-        fetch('/api/students')
+      const [stagesData, studentsData] = await Promise.all([
+        fetchStages(),
+        fetchStudents()
       ]);
-      const stagesData = await stagesRes.json();
-      const studentsData = await studentsRes.json();
       setStages(stagesData || []);
       setStudents(studentsData || []);
+      setBackendInfo(getActiveBackendInfo());
 
       if (studentsData && studentsData.length > 0) {
         setCurrentStudent((prev) => {
           if (!prev) return studentsData[0];
-          const updated = studentsData.find((s) => s.id === prev.id);
+          const updated = studentsData.find((s) => Number(s.id) === Number(prev.id));
           return updated || studentsData[0];
         });
       }
@@ -88,13 +99,8 @@ export default function App() {
     e.preventDefault();
     if (!newStudentForm.name.trim()) return;
     try {
-      const res = await fetch('/api/students', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newStudentForm)
-      });
-      const created = await res.json();
-      if (res.ok) {
+      const created = await createStudent(newStudentForm);
+      if (created) {
         await loadInitialData();
         setCurrentStudent(created);
         setNewStudentForm({
@@ -113,7 +119,7 @@ export default function App() {
 
   const getStageProgressForStudent = (stageId) => {
     if (!currentStudent || !currentStudent.progress) return null;
-    return currentStudent.progress.find((p) => p.stage_id === stageId) || null;
+    return currentStudent.progress.find((p) => Number(p.stage_id) === Number(stageId)) || null;
   };
 
   return (
@@ -126,7 +132,7 @@ export default function App() {
           </div>
           <div>
             <h1>ChemQuest ม.4</h1>
-            <span>ปฏิบัติการคำนวณทางเคมี (Mole • Mass • Gas • Particle)</span>
+            <span>ปฏิบัติการคำนวณทางเคมี (Web App & Desktop Edition)</span>
           </div>
         </div>
 
@@ -165,6 +171,15 @@ export default function App() {
             <BookOpen size={17} /> สูตรเคมี
           </button>
 
+          <button
+            className={`lab-util-btn db-mode-btn mode-${backendInfo.mode}`}
+            onClick={() => setCloudModalOpen(true)}
+            title="ตั้งค่าฐานข้อมูล Supabase Cloud / SQLite"
+          >
+            <Cloud size={16} />
+            <span>{backendInfo.label}</span>
+          </button>
+
           {currentStudent && (
             <button
               className="student-profile-pill"
@@ -190,13 +205,17 @@ export default function App() {
             {/* Hero Banner */}
             <div className="hero-banner">
               <div className="hero-left">
-                <div className="sqlite-pill">
-                  <Database size={14} /> บันทึกผลลงฐานข้อมูล SQLite อัตโนมัติ
+                <div
+                  className="sqlite-pill clickable-pill"
+                  onClick={() => setCloudModalOpen(true)}
+                  title="คลิกเพื่อดูหรือตั้งค่าการเชื่อมต่อฐานข้อมูล"
+                >
+                  <Database size={14} /> โหมดฐานข้อมูล: {backendInfo.label} (คลิกตั้งค่าได้)
                 </div>
                 <h2>ยินดีต้อนรับสู่ศูนย์วิจัยปริมาณสัมพันธ์ทางเคมี ม.4</h2>
                 <p>
                   ฝึกฝนทักษะการคำนวณ <strong>มวลโมเลกุล, โมลกับมวลของสาร, จำนวนอนุภาค และปริมาตรแก๊สที่ STP</strong>{' '}
-                  ผ่านภารกิจพิชิตบอสทั้ง 5 ห้องปฏิบัติการ!
+                  ผ่านภารกิจพิชิตบอสทั้ง 5 ห้องปฏิบัติการ! รองรับทั้งบนเว็บ (Vercel + Supabase) และโปรแกรม Desktop (Electron + SQLite)
                 </p>
 
                 <div className="master-formula-strip">
@@ -320,6 +339,7 @@ export default function App() {
           <GameplayArena
             stage={selectedStage}
             student={currentStudent}
+            backendLabel={backendInfo.label}
             onBackToMap={() => {
               loadInitialData();
               setActiveNav('map');
@@ -330,10 +350,21 @@ export default function App() {
         )}
 
         {activeNav === 'dashboard' && (
-          <TeacherDashboard students={students} onRefreshStudents={loadInitialData} />
+          <TeacherDashboard
+            students={students}
+            backendLabel={backendInfo.label}
+            onRefreshStudents={loadInitialData}
+            onOpenCloudSetup={() => setCloudModalOpen(true)}
+          />
         )}
 
-        {activeNav === 'questions' && <QuestionManager stages={stages} />}
+        {activeNav === 'questions' && (
+          <QuestionManager
+            stages={stages}
+            backendLabel={backendInfo.label}
+            onQuestionsChanged={loadInitialData}
+          />
+        )}
       </main>
 
       {/* Lab Tools Modal (Periodic Table, Calculator, Formulas) */}
@@ -343,12 +374,19 @@ export default function App() {
         initialTab={labModalTab}
       />
 
+      {/* Cloud / Supabase Connection Modal */}
+      <CloudSetupModal
+        isOpen={cloudModalOpen}
+        onClose={() => setCloudModalOpen(false)}
+        onConnectionChanged={loadInitialData}
+      />
+
       {/* Student Profile Switcher / Registration Modal */}
       {profileModalOpen && (
         <div className="modal-backdrop" onClick={() => setProfileModalOpen(false)}>
           <div className="modal-panel profile-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>👩‍🔬 เลือกโปรไฟล์นักเรียน หรือลงทะเบียนผู้เล่นใหม่ (บันทึกลง SQLite)</h3>
+              <h3>👩‍🔬 เลือกโปรไฟล์นักเรียน หรือลงทะเบียนผู้เล่นใหม่ ({backendInfo.label})</h3>
               <button className="icon-close-btn" onClick={() => setProfileModalOpen(false)}>
                 ✕
               </button>
@@ -362,7 +400,7 @@ export default function App() {
                     <div
                       key={st.id}
                       className={`student-select-item ${
-                        currentStudent?.id === st.id ? 'active' : ''
+                        Number(currentStudent?.id) === Number(st.id) ? 'active' : ''
                       }`}
                       onClick={() => {
                         setCurrentStudent(st);

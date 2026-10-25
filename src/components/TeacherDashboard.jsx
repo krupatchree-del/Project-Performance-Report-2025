@@ -8,10 +8,17 @@ import {
   XCircle,
   Users,
   Star,
-  Clock
+  Clock,
+  Cloud
 } from 'lucide-react';
+import { fetchAnalyticsData } from '../services/dataService';
 
-export default function TeacherDashboard({ students, onRefreshStudents }) {
+export default function TeacherDashboard({
+  students,
+  backendLabel = 'Supabase / SQLite',
+  onRefreshStudents,
+  onOpenCloudSetup
+}) {
   const [analytics, setAnalytics] = useState({
     topicStats: [],
     stageStats: [],
@@ -22,10 +29,15 @@ export default function TeacherDashboard({ students, onRefreshStudents }) {
   const fetchAnalytics = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/analytics');
-      const data = await res.json();
-      setAnalytics(data);
-      if (onRefreshStudents) onRefreshStudents();
+      const data = await fetchAnalyticsData();
+      setAnalytics(
+        data || {
+          topicStats: [],
+          stageStats: [],
+          recentLogs: []
+        }
+      );
+      if (onRefreshStudents) await onRefreshStudents();
     } catch (err) {
       console.error('Error loading analytics:', err);
     } finally {
@@ -70,6 +82,7 @@ export default function TeacherDashboard({ students, onRefreshStudents }) {
   const exportLogsJSON = () => {
     const payload = {
       exportedAt: new Date().toISOString(),
+      backendEngine: backendLabel,
       students,
       topicStats: analytics.topicStats,
       stageStats: analytics.stageStats,
@@ -90,13 +103,18 @@ export default function TeacherDashboard({ students, onRefreshStudents }) {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <div>
-          <h2>📊 แดชบอร์ดสถิติคะแนนและวิเคราะห์ผลการเรียนรู้ (SQLite Analytics)</h2>
+          <h2>📊 แดชบอร์ดสถิติคะแนนและวิเคราะห์ผลการเรียนรู้ ({backendLabel})</h2>
           <p className="muted-text">
             ติดตามผลสัมฤทธิ์ทางการเรียนรายบุคคลและรายหัวข้อการคำนวณเคมี ม.4 พร้อมส่งออกไฟล์สำหรับงานวิจัย
           </p>
         </div>
 
         <div className="dashboard-actions">
+          {onOpenCloudSetup && (
+            <button className="secondary-btn" onClick={onOpenCloudSetup}>
+              <Cloud size={16} /> ตั้งค่า Supabase Cloud
+            </button>
+          )}
           <button className="secondary-btn" onClick={fetchAnalytics}>
             <RefreshCw size={16} /> รีเฟรชข้อมูล
           </button>
@@ -196,7 +214,7 @@ export default function TeacherDashboard({ students, onRefreshStudents }) {
             <p className="muted-text">กำลังคำนวณสถิติ...</p>
           ) : analytics.topicStats.length === 0 ? (
             <p className="muted-text">
-              ยังไม่มีประวัติการทำโจทย์รายข้อ ลองเข้าเล่นด่านเพื่อสะสมสถิติลงฐานข้อมูล SQLite
+              ยังไม่มีประวัติการทำโจทย์รายข้อ ลองเข้าเล่นด่านเพื่อสะสมสถิติลงฐานข้อมูล ({backendLabel})
             </p>
           ) : (
             <div className="topic-bars-list">
@@ -249,7 +267,7 @@ export default function TeacherDashboard({ students, onRefreshStudents }) {
 
       {/* Recent Attempt Logs */}
       <div className="dash-card" style={{ marginTop: '1.5rem' }}>
-        <h3>📝 ประวัติการตอบคำถามรายข้อล่าสุด (SQLite Attempt Logs)</h3>
+        <h3>📝 ประวัติการตอบคำถามรายข้อล่าสุด ({backendLabel})</h3>
         {analytics.recentLogs.length === 0 ? (
           <p className="muted-text">ยังไม่มีรายการบันทึกการทำโจทย์</p>
         ) : (

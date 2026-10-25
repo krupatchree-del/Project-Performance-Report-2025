@@ -10,6 +10,7 @@
     "start": "node ./node_modules/vite/bin/vite.js build && ./node_modules/electron/dist/electron.exe ."
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "lucide-react": "^0.468.0",

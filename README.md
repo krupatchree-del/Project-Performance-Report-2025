@@ -1,6 +1,9 @@
-# 🧪 ChemQuest ม.4 — เกมตะลุยด่านห้องแล็บการคำนวณทางเคมี
+# 🧪 ChemQuest ม.4 — เกมตะลุยด่านห้องแล็บการคำนวณทางเคมี (Hybrid Web App & Desktop Edition)
 
-แอปพลิเคชันเกมเพื่อการเรียนรู้วิชาเคมี สำหรับนักเรียนชั้นมัธยมศึกษาปีที่ 4 เรื่อง **"การคำนวณทางเคมี (ปริมาณสัมพันธ์)"** พัฒนาด้วยสถาปัตยกรรม **Vite (React Frontend) + Node.js (Express Backend) + SQLite (Database) + Electron (Desktop Application)**
+แอปพลิเคชันเกมเพื่อการเรียนรู้วิชาเคมี สำหรับนักเรียนชั้นมัธยมศึกษาปีที่ 4 เรื่อง **"การคำนวณทางเคมี (ปริมาณสัมพันธ์)"** ที่ออกแบบเป็นระบบ **Hybrid Architecture** รองรับการใช้งานได้ถึง 2 รูปแบบในโปรเจกต์เดียว:
+
+1. 🌐 **Web Application Mode**: รันหน้าบ้านผ่าน **Vercel (Vite + React)** และเชื่อมหลังบ้าน/ฐานข้อมูล Cloud ผ่าน **Supabase (PostgreSQL)** นักเรียนสามารถเข้าเล่นผ่านคอมพิวเตอร์ แท็บเล็ต หรือสมาร์ตโฟนได้ทันที
+2. 🖥️ **Desktop Application Mode**: รันบนคอมพิวเตอร์แบบออฟไลน์ด้วย **Electron + Node.js + SQLite** (`database/chem_quest.sqlite`)
 
 ---
 
@@ -20,28 +23,58 @@
 
 ---
 
-## 🚀 วิธีเปิดใช้งานแอปพลิเคชันบน Desktop
+## ☁️ คู่มือการติดตั้งและเผยแพร่เป็น Web App (Vercel + Supabase) อย่างละเอียด
 
-### วิธีที่ 1: ดับเบิลคลิกไฟล์ Launcher (แนะนำ)
+### ขั้นตอนที่ 1: ตั้งค่าฐานข้อมูลบน Supabase (ใช้เวลาประมาณ 3 นาที)
+1. ไปที่เว็บไซต์ [https://supabase.com](https://supabase.com) และเข้าสู่ระบบ (Sign In ด้วย GitHub ได้เลย)
+2. กดปุ่ม **"New project"** ตั้งชื่อโปรเจกต์ เช่น `chemquest-m4` กำหนดรหัสผ่าน Database และเลือก Region (เช่น `Southeast Asia (Singapore)`) แล้วกด **Create new project**
+3. เมื่อโปรเจกต์พร้อมแล้ว ให้ไปที่เมนูด้านซ้ายเลือก **"SQL Editor"** -> กด **"New query"**
+4. เปิดไฟล์ **`supabase/schema_and_seed.sql`** ในโปรเจกต์นี้ คัดลอกโค้ด SQL ทั้งหมดไปวางในช่อง SQL Editor แล้วกดปุ่ม **"Run"**
+   - สคริปต์จะสร้างตารางทั้ง 5 ตาราง (`stages`, `students`, `questions`, `stage_progress`, `attempt_logs`), ตั้งค่าสิทธิ์ RLS และเพิ่มข้อมูลตั้งต้น 5 ด่าน + โจทย์เคมี ม.4 จำนวน 25 ข้อให้อัตโนมัติ
+5. ไปที่เมนูด้านซ้าย **"Project Settings"** (รูปฟันเฟือง) -> เลือกเมนู **"API"** แล้วคัดลอกค่า 2 ค่านี้เก็บไว้:
+   - **Project URL** (เช่น `https://xxxxxxxxxxxx.supabase.co`)
+   - **Project API Keys -> `anon` `public`** (รหัสยาวๆ ที่ขึ้นต้นด้วย `eyJ...`)
+
+---
+
+### ขั้นตอนที่ 2: นำหน้าบ้านขึ้นออนไลน์ผ่าน Vercel
+1. ไปที่เว็บไซต์ [https://vercel.com](https://vercel.com) และเข้าสู่ระบบด้วยบัญชี GitHub
+2. กดปุ่ม **"Add New..."** -> เลือก **"Project"**
+3. เลือก Repository **`Project-Performance-Report-2025`** แล้วกด **"Import"**
+4. ในหน้าตั้งค่าก่อนกด Deploy:
+   - **Framework Preset**: เลือกเป็น `Vite`
+   - เปิดหัวข้อ **"Environment Variables"** แล้วเพิ่มตัวแปร 2 ตัวดังนี้:
+     - ชื่อ `VITE_SUPABASE_URL` = วางค่า **Project URL** ที่ได้จาก Supabase
+     - ชื่อ `VITE_SUPABASE_ANON_KEY` = วางค่า **anon public key** ที่ได้จาก Supabase
+5. กดปุ่ม **"Deploy"** รอประมาณ 1 นาที จะได้ลิงก์เว็บไซต์ (`https://....vercel.app`) สำหรับให้นักเรียนเข้าใช้งานได้ทันที!
+
+> 💡 **ทิปพิเศษ**: แม้ยังไม่ได้ใส่ Environment Variables ตอน Deploy ครั้งแรก ตัวเว็บก็สามารถเปิดเล่นได้ทันทีในโหมดสาธิต (Web Demo Mode) และครูสามารถกดปุ่ม **"ตั้งค่าฐานข้อมูล"** บนแถบเมนูด้านบนของเว็บเพื่อวาง `Supabase URL` และ `Anon Key` จากหน้าเว็บโดยตรงได้เช่นกัน!
+
+---
+
+## 🖥️ วิธีเปิดใช้งานแบบโปรแกรม Desktop (Electron + SQLite)
+
+### วิธีที่ 1: ดับเบิลคลิกไฟล์ Launcher
 - ดับเบิลคลิกไฟล์ **`Start-ChemQuest-Desktop.bat`** ในโฟลเดอร์โปรเจกต์เพื่อเปิดแอปพลิเคชันแบบหน้าต่าง Desktop (Electron) ได้ทันที
 
 ### วิธีที่ 2: รันผ่านคำสั่ง npm
 ```bash
-# โหมดพัฒนา (รัน Backend + Vite + Electron พร้อมกัน)
-npm run dev
+# ติดตั้งแพ็กเกจ (ครั้งแรกครั้งเดียว)
+npm install
 
-# โหมดใช้งานจริงบน Desktop (Build Vite + เปิด Electron)
+# รันเฉพาะเว็บในเครื่อง (Vite Dev Server)
+npm run dev:client
+
+# รันโหมดโปรแกรม Desktop (Build Vite + เปิด Electron + SQLite)
 npm start
 ```
 
 ---
 
 ## 🗂️ โครงสร้างโปรเจกต์
-- `electron/main.cjs` — โปรเซสหลักของ Electron สำหรับเปิดหน้าต่าง Desktop และเชื่อมต่อ Node.js Backend อัตโนมัติ
-- `server/index.cjs` — REST API Server ด้วย Node.js + Express
-- `server/db.cjs` & `server/seedData.cjs` — ระบบจัดการฐานข้อมูล **SQLite** (`database/chem_quest.sqlite`) พร้อมข้อมูลตั้งต้น 5 ด่าน และคลังโจทย์เคมี ม.4
-- `src/` — โค้ดส่วนติดต่อผู้ใช้ (Vite + React):
-  - `src/components/GameplayArena.jsx` — ระบบเกม RPG ต่อสู้กับบอสห้องแล็บ รองรับทั้งโจทย์ตัวเลือกและเติมตัวเลข พร้อมคำใบ้และเฉลยวิธีทำละเอียด
-  - `src/components/LabToolsModal.jsx` — ตารางธาตุอินเทอร์แอคทีฟ + ถาดคำนวณมวลโมเลกุลอัตโนมัติ + เครื่องคิดเลขเคมี + คัมภีร์สูตรเคมี ม.4
-  - `src/components/TeacherDashboard.jsx` — แดชบอร์ดสถิติคะแนน Leaderboard วิเคราะห์ความแม่นยำรายหัวข้อ และส่งออกไฟล์ CSV/JSON สำหรับงานวิจัย
-  - `src/components/QuestionManager.jsx` — ระบบจัดการคลังโจทย์สำหรับครู (เพิ่ม/ลบโจทย์ลง SQLite)
+- `supabase/schema_and_seed.sql` — สคริปต์ SQL สำหรับสร้างตารางและข้อมูลโจทย์เคมี ม.4 ทั้งหมดบน **Supabase PostgreSQL**
+- `vercel.json` & `.env.example` — ไฟล์กำหนดค่าสำหรับ Deploy ขึ้น **Vercel**
+- `src/services/dataService.js` — ระบบสลับฐานข้อมูลอัตโนมัติ (Hybrid Data Layer) รองรับทั้ง **Supabase Cloud**, **Node.js + SQLite** และ **LocalStorage Fallback**
+- `src/components/CloudSetupModal.jsx` — หน้าต่างตั้งค่าการเชื่อมต่อ Supabase และปุ่ม Auto-Seed ข้อมูลขึ้น Cloud จากหน้าเว็บ
+- `electron/main.cjs` — โปรเซสหลักของ Electron สำหรับเวอร์ชัน Desktop
+- `server/index.cjs` & `server/db.cjs` — เซิร์ฟเวอร์ Node.js + SQLite สำหรับเวอร์ชัน Desktop
